@@ -7,7 +7,7 @@ from .goals import GoalStatus, GoalStore
 
 router = APIRouter(prefix="/v1/goals", tags=["goals"])
 goal_store = GoalStore(settings.memory_db_path)
-goal_runner = GoalRunner(goal_store)
+goal_runner = GoalRunner(goal_store, settings.memory_db_path)
 
 
 class GoalRequest(BaseModel):
