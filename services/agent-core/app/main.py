@@ -7,9 +7,11 @@ from .config import settings
 from .memory import MemoryStore
 from .task_api import list_tasks
 from .goal_api import router as goal_router
+from .research_api import router as research_router
 
-app = FastAPI(title=settings.app_name, version="0.4.0")
+app = FastAPI(title=settings.app_name, version="0.7.0")
 app.include_router(goal_router)
+app.include_router(research_router)
 memory = MemoryStore(settings.memory_db_path)
 aegis = AegisAgent(memory)
 
@@ -26,7 +28,7 @@ class ChatResponse(BaseModel):
 
 @app.get("/health")
 async def health():
-    return {"status": "ok", "service": "aegis-agent-core", "version": "0.4.0"}
+    return {"status": "ok", "service": "aegis-agent-core", "version": "0.7.0"}
 
 
 @app.get("/v1/tasks/{session_id}")
