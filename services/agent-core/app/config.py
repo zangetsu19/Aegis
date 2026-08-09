@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     environment: str = "development"
     openai_api_key: str = ""
     openai_model: str = "gpt-5-nano"
+    embedding_model: str = "text-embedding-3-small"
     max_agent_turns: int = 12
     memory_db_path: str = "./data/aegis.db"
 
