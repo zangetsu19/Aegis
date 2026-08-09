@@ -1,17 +1,26 @@
 from agents import function_tool
 
+from .config import settings
+from .memory import MemoryStore
+from .tasks import TaskStore
+
+
+memory_store = MemoryStore(settings.memory_db_path)
+task_store = TaskStore(settings.memory_db_path)
+
 
 @function_tool
 def remember(session_id: str, fact: str) -> str:
-    """Record a durable user/project fact for the current session."""
-    # The runtime injects the real persistence implementation later.
-    return f"Memory candidate recorded for session {session_id}: {fact}"
+    """Persist a useful fact or preference for the current session."""
+    memory_store.add(session_id, "memory", fact)
+    return f"Remembered: {fact}"
 
 
 @function_tool
-def create_task(title: str, objective: str) -> str:
-    """Create a task proposal for the AEGIS task engine."""
-    return f"Task proposal created: {title} — {objective}"
+def create_task(session_id: str, title: str, objective: str) -> str:
+    """Create a persistent task for later execution or tracking."""
+    task_id = task_store.create(session_id, title, objective)
+    return f"Created task #{task_id}: {title}"
 
 
 TOOLS = [remember, create_task]
